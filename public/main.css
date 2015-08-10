@@ -23,3 +23,9 @@ h1 {
     line-height: 34px;
     color: rgba(255, 255, 255, 0.87);
 }
+
+button {
+    background-image: url(http://png-1.findicons.com/files/icons/99/office/16/delete.png);
+    height: 20px;
+    width: 20px;
+}
