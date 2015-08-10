@@ -24,6 +24,27 @@ module.exports = function(port, middleware, callback) {
         res.sendStatus(201);
     });
 
+    // Update
+    app.put("/api/todo/:id", function(req, res) {
+        var todo = getTodo(req.params.id);
+        if (todo) {
+            if (req.body.title != null)
+                todo.title = req.body.title;
+            if (req.body.isComplete == true)
+                todo.isComplete = true;
+            res.sendStatus(200);
+        }
+        else {
+            if (req.body.title != null)
+                todo.title = req.body.title;
+            if (req.body.isComplete == true)
+                todo.isComplete = true;
+            todos.push(todo);
+            res.sendStatus(201);
+        }
+
+    });
+
     // Read
     app.get("/api/todo", function(req, res) {
         res.json(todos);

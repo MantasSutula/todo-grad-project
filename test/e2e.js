@@ -65,5 +65,33 @@ testing.describe("end to end", function() {
             });
         });
     });
+    testing.describe("on delete todo item", function() {
+        testing.it("delete todo item", function() {
+            helpers.navigateToSite();
+            helpers.addTodo("New todo item");
+            helpers.removeTodo(0);
+            helpers.getTodoList().then(function (elements) {
+                assert.equal(elements.length, 0);
+            });
+        });
+        testing.it("can be done multiple times", function() {
+            helpers.navigateToSite();
+            helpers.addTodo("New todo item");
+            helpers.addTodo("Another new todo item");
+            helpers.removeTodo(0);
+            helpers.removeTodo(1);
+            helpers.getTodoList().then(function(elements) {
+                assert.equal(elements.length, 0);
+            });
+        });
+        testing.it("displays an error if the request fails", function() {
+            helpers.setupErrorRoute("delete", "/api/todo");
+            helpers.navigateToSite();
+            helpers.removeTodo(0);
+            helpers.getErrorText().then(function(text) {
+                assert.equal(text, "Not Found");
+            });
+        });
+    });
 });
 
