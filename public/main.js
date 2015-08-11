@@ -179,10 +179,9 @@ function deleteCompletedTodoItems() {
 
 function doneTodoItem(callback) {
     var createRequest = new XMLHttpRequest();
-    createRequest.open("PUT", "/api/todo/" + this.id);
+    createRequest.open("PUT", "/api/todo/" + this.value);
     createRequest.setRequestHeader("Content-type", "application/json");
     createRequest.send(JSON.stringify({
-        title : null,
         isComplete: true
     }));
     createRequest.onload = function() {

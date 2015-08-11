@@ -121,12 +121,14 @@ describe("server", function() {
                 request.put({
                     url: todoListUrl + "/0",
                     json: {
-                        title: "Edit"
+                        title: "Edit",
+                        isComplete: true
                     }
                 }, function() {
                     request.get(todoListUrl, function(error, response, body) {
                         assert.deepEqual(JSON.parse(body), [{
                             title: "Edit",
+                            isComplete: true,
                             id: "0"
                         }]);
                         assert.equal(response.statusCode, 200);
@@ -135,32 +137,34 @@ describe("server", function() {
                 });
             });
         });
+        it("update todo item without updating title return with status code 200", function(done) {
+            request.post({
+                url: todoListUrl,
+                json: {
+                    title: "This is a TODO item",
+                    isComplete: false
+                }
+            }, function() {
+                request.put(todoListUrl + "/0", function(error, response) {
+                    assert.equal(response.statusCode, 200);
+                    done();
+                });
+            });
+        });
         it("create the todo and responds with status code 201", function(done) {
             request.put({
                 url: todoListUrl + "/0",
                 json: {
-                    title: "Edit"
+                    title: "Edit",
+                    isComplete: true
                 }
             }, function() {
                 request.get(todoListUrl, function(error, response, body) {
                     assert.deepEqual(JSON.parse(body), [{
                         title: "Edit",
-                        isComplete: false,
+                        isComplete: true,
                         id: "0"
                     }]);
-                    done();
-                });
-            });
-        });
-        it("no title for existing todo item responds with status code 500", function(done) {
-            request.post({
-                url: todoListUrl,
-                json: {
-                    title: "This is a TODO item"
-                }
-            }, function() {
-                request.put(todoListUrl + "/0", function (error, response) {
-                    assert.equal(response.statusCode, 500);
                     done();
                 });
             });
@@ -168,6 +172,17 @@ describe("server", function() {
         it("no title for not existing todo item responds with status code 500", function(done) {
             request.put(todoListUrl + "/0", function(error, response) {
                 assert.equal(response.statusCode, 500);
+                done();
+            });
+        });
+        it("return with status code 404", function(done) {
+            request.put({
+                url: todoListUrl,
+                json: {
+                    title: null
+                }
+            }, function(error, response) {
+                assert.equal(response.statusCode, 404);
                 done();
             });
         });

@@ -32,10 +32,13 @@ module.exports = function(port, middleware, callback) {
                 todo.title = req.body.title;
             }
             else {
-                res.sendStatus(500);
+                todo.title = todo.title;
             }
             if (req.body.isComplete === true) {
                 todo.isComplete = true;
+            }
+            else {
+                todo.isComplete = todo.isComplete;
             }
             res.sendStatus(200);
         }
@@ -50,12 +53,10 @@ module.exports = function(port, middleware, callback) {
             }
             if (req.body.isComplete === true) {
                 todoIn.isComplete = true;
-            }
-            else {
+            } else {
                 todoIn.isComplete = false;
             }
             todos.push(todoIn);
-            res.set("Location", "/api/todo/" + todoIn.id);
             res.sendStatus(201);
         }
 
