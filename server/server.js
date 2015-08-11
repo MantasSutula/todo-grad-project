@@ -9,6 +9,7 @@ module.exports = function(port, middleware, callback) {
         app.use(middleware);
     }
     app.use(express.static("public"));
+    app.use("/fetch/", express.static("node_modules/whatwg-fetch"));
     app.use(bodyParser.json());
 
     var latestId = 0;
@@ -34,11 +35,11 @@ module.exports = function(port, middleware, callback) {
             else {
                 todo.title = todo.title;
             }
-            if (req.body.isComplete === true) {
+            if (req.body.isComplete) {
                 todo.isComplete = true;
             }
             else {
-                todo.isComplete = todo.isComplete;
+                todo.isComplete = false;
             }
             res.sendStatus(200);
         }

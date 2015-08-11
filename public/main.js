@@ -56,7 +56,6 @@ function reloadTodoList() {
     getTodoList(function(todos) {
         todoListPlaceholder.style.display = "none";
         todos.forEach(function(todo) {
-            console.log(todo.title);
             var todoFiltered = todoListDisplayFilter(todo, sortMethod);
             if (todoFiltered !== undefined) {
                 var listItem = document.createElement("li");
@@ -70,20 +69,21 @@ function reloadTodoList() {
                 doneButton.onclick = doneTodoItem;
                 doneButton.className = "btn btn-default glyphicon glyphicon-ok left-button";
                 doneButton.setAttribute("value", todoFiltered.id);
+                editButton.onclick = editTodoItem;
                 editButton.className = "btn btn-default glyphicon glyphicon-pencil right-button";
                 editButton.setAttribute("value", todoFiltered.id);
                 listItem.textContent = todoFiltered.title;
-                console.log(todoFiltered.title + " " + todoFiltered.id + " " + todoFiltered.isComplete);
                 listItem.className = "list-group-item";
                 if (todoFiltered.isComplete) {
                     listItem.className = "list-group-item list-group-item-success";
+                    doneButton.setAttribute("id", "true");
                     countNumberCompleted = true;
                 }
                 else {
-                    listItem.appendChild(doneButton);
                     countNumberRemaining++;
                 }
                 listItem.appendChild(deleteButton);
+                listItem.appendChild(doneButton);
                 listItem.appendChild(editButton);
                 todoList.appendChild(listItem);
                 countLabel.textContent = "Remaining tasks: " + countNumberRemaining;
@@ -95,6 +95,9 @@ function reloadTodoList() {
             deleteAllButton.onclick = deleteCompletedTodoItems;
             countLabel.innerText += String.fromCharCode(13) + "Delete all completed tasks ";
             countLabel.appendChild(deleteAllButton);
+        }
+        if (todos.length > 0) {
+            loadFilterButtons();
         }
     });
 }
@@ -177,12 +180,34 @@ function deleteCompletedTodoItems() {
     });
 }
 
-function doneTodoItem(callback) {
+function doneTodoItem() {
+    var createRequest = new XMLHttpRequest();
+    var isCompleteBoolean = true;
+    if (this.id === "true") {
+        isCompleteBoolean = false;
+    }
+    createRequest.open("PUT", "/api/todo/" + this.value);
+    createRequest.setRequestHeader("Content-type", "application/json");
+    createRequest.send(JSON.stringify({
+        isComplete: isCompleteBoolean
+    }));
+    createRequest.onload = function() {
+        if (this.status === 200 || this.status === 201) {
+
+        } else {
+            error.textContent = "Failed to create item. Server returned " + this.status + " - " + this.responseText;
+        }
+    };
+    reloadTodoList();
+}
+
+function editTodoItem() {
+    var todoTitle = window.prompt("Enter the new title", "Nice!");
     var createRequest = new XMLHttpRequest();
     createRequest.open("PUT", "/api/todo/" + this.value);
     createRequest.setRequestHeader("Content-type", "application/json");
     createRequest.send(JSON.stringify({
-        isComplete: true
+        title: todoTitle
     }));
     createRequest.onload = function() {
         if (this.status === 200 || this.status === 201) {
