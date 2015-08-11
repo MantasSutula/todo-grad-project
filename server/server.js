@@ -28,18 +28,34 @@ module.exports = function(port, middleware, callback) {
     app.put("/api/todo/:id", function(req, res) {
         var todo = getTodo(req.params.id);
         if (todo) {
-            if (req.body.title != null)
+            if (req.body.title !== undefined) {
                 todo.title = req.body.title;
-            if (req.body.isComplete == true)
+            }
+            else {
+                res.sendStatus(500);
+            }
+            if (req.body.isComplete === true) {
                 todo.isComplete = true;
+            }
             res.sendStatus(200);
         }
         else {
-            if (req.body.title != null)
-                todo.title = req.body.title;
-            if (req.body.isComplete == true)
-                todo.isComplete = true;
-            todos.push(todo);
+            var todoIn = req.body;
+            todoIn.id = req.params.id;
+            if (req.body.title !== undefined) {
+                todoIn.title = req.body.title;
+            }
+            else {
+                res.sendStatus(500);
+            }
+            if (req.body.isComplete === true) {
+                todoIn.isComplete = true;
+            }
+            else {
+                todoIn.isComplete = false;
+            }
+            todos.push(todoIn);
+            res.set("Location", "/api/todo/" + todoIn.id);
             res.sendStatus(201);
         }
 

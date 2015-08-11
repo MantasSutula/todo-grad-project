@@ -110,4 +110,66 @@ describe("server", function() {
             });
         });
     });
+    describe("update a todo", function() {
+        it("updates the todo and responds with status code 200", function(done) {
+            request.post({
+                url: todoListUrl,
+                json: {
+                    title: "This is a TODO item"
+                }
+            }, function() {
+                request.put({
+                    url: todoListUrl + "/0",
+                    json: {
+                        title: "Edit"
+                    }
+                }, function() {
+                    request.get(todoListUrl, function(error, response, body) {
+                        assert.deepEqual(JSON.parse(body), [{
+                            title: "Edit",
+                            id: "0"
+                        }]);
+                        assert.equal(response.statusCode, 200);
+                        done();
+                    });
+                });
+            });
+        });
+        it("create the todo and responds with status code 201", function(done) {
+            request.put({
+                url: todoListUrl + "/0",
+                json: {
+                    title: "Edit"
+                }
+            }, function() {
+                request.get(todoListUrl, function(error, response, body) {
+                    assert.deepEqual(JSON.parse(body), [{
+                        title: "Edit",
+                        isComplete: false,
+                        id: "0"
+                    }]);
+                    done();
+                });
+            });
+        });
+        it("no title for existing todo item responds with status code 500", function(done) {
+            request.post({
+                url: todoListUrl,
+                json: {
+                    title: "This is a TODO item"
+                }
+            }, function() {
+                request.put(todoListUrl + "/0", function (error, response) {
+                    assert.equal(response.statusCode, 500);
+                    done();
+                });
+            });
+        });
+        it("no title for not existing todo item responds with status code 500", function(done) {
+            request.put(todoListUrl + "/0", function(error, response) {
+                assert.equal(response.statusCode, 500);
+                done();
+            });
+        });
+    });
 });

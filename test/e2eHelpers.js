@@ -94,4 +94,9 @@ module.exports.setupErrorRoute = function(action, route) {
             res.sendStatus(500);
         });
     }
+    if (action === "delete") {
+        router.post(route, function(req, res) {
+            res.sendStatus(500);
+        });
+    }
 };

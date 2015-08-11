@@ -1,12 +1,12 @@
 body {
-    background: #E8F5E9;
+    background: #FFFFFF;
     color: rgba(0, 0, 0, 0.87);
     font-family: sans-serif;
     margin: 0;
 }
 
 header {
-    background-color: #3333FF;
+    background-color: #000000;
     padding: 0.5em 1em;
 }
 
@@ -26,14 +26,49 @@ h1 {
 
 .delete {
     background-image: url(http://png-1.findicons.com/files/icons/99/office/16/delete.png);
-    height: 20px;
-    width: 20px;
+    background-repeat: no-repeat;
+    cursor: pointer;
+    height: 19px;
+    width: 19px;
+    padding: 0px;
 }
 
 .complete {
     background-image: url(http://png-1.findicons.com/files/icons/767/wp_woothemes_ultimate/16/checkmark.png);
-    height: 20px;
-    width: 20px;
+    background-repeat: no-repeat;
+    cursor: pointer;
+    height: 19px;
+    width: 19px;
+    padding: 0px;
+}
+
+section.left {
+    float: left;
+    width: 40%;
+}
+
+.right {
+    float: right;
+    padding-right: 20%;
+}
+
+.right-button {
+    float: right;
+}
+
+
+.left {
+    float: left;
+    width: 50%;
+}
+
+.left-button {
+    float: left;
+}
+
+li {
+    width: 100%;
+    height: 55px;
 }
 
 li.completedTask {
