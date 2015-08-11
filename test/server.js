@@ -169,6 +169,23 @@ describe("server", function() {
                 });
             });
         });
+        it("create the todo and update it and responds with status code 201", function(done) {
+            request.put({
+                url: todoListUrl + "/0",
+                json: {
+                    title: "Edit"
+                }
+            }, function() {
+                request.get(todoListUrl, function (error, response, body) {
+                    assert.deepEqual(JSON.parse(body), [{
+                        title: "Edit",
+                        isComplete: false,
+                        id: "0"
+                    }]);
+                    done();
+                });
+            });
+        });
         it("no title for not existing todo item responds with status code 500", function(done) {
             request.put(todoListUrl + "/0", function(error, response) {
                 assert.equal(response.statusCode, 500);

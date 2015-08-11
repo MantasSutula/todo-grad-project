@@ -47,17 +47,18 @@ module.exports = function(port, middleware, callback) {
             todoIn.id = req.params.id;
             if (req.body.title !== undefined) {
                 todoIn.title = req.body.title;
+                if (req.body.isComplete === true) {
+                    todoIn.isComplete = true;
+                }
+                else {
+                    todoIn.isComplete = false;
+                }
+                todos.push(todoIn);
+                res.sendStatus(201);
             }
             else {
                 res.sendStatus(500);
             }
-            if (req.body.isComplete === true) {
-                todoIn.isComplete = true;
-            } else {
-                todoIn.isComplete = false;
-            }
-            todos.push(todoIn);
-            res.sendStatus(201);
         }
 
     });
