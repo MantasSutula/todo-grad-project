@@ -37,15 +37,16 @@ li {
 }
 
 .table-text {
-    padding-left: 2%;
+    padding-left: 1%;
     padding-right: 2%;
 }
 
 .delete {
+    height: 120%;
+    font-size: 11px;
     cursor: pointer;
-    height: 19px;
-    width: 19px;
-    padding: 0px;
+    vertical-align: middle;
+    background-color: #ff0000;
 }
 
 .complete {
@@ -79,12 +80,12 @@ li {
     color: white;
 }
 
+.list-item-span {
+    padding-left: 20px;
+    text-align: center;
+}
+
 li.completedTask {
     color: #008800;
     font-weight: bold;
-}
-
-section.left {
-    float: left;
-    width: 40%;
 }

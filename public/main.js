@@ -80,10 +80,12 @@ function reloadTodoList() {
             var todoFiltered = todoListDisplayFilter(todo, sortMethod);
             if (todoFiltered !== undefined) {
                 var listItem = document.createElement("li");
+                var titleSpan = document.createElement("span");
                 var deleteButton = document.createElement("button");
                 var doneButton = document.createElement("button");
                 var editButton = document.createElement("button");
-                listItem.textContent = todoFiltered.title;
+                titleSpan.textContent = todoFiltered.title;
+                titleSpan.className = "list-item-span";
                 listItem.className = "list-group-item";
                 deleteButton.onclick = deleteTodoItem;
                 deleteButton.className = "btn btn-default glyphicon glyphicon-trash right-button";
@@ -104,21 +106,15 @@ function reloadTodoList() {
                     doneButton.setAttribute("isComplete", "true");
                     countNumberCompleted = true;
                 }
+                listItem.appendChild(titleSpan);
                 listItem.appendChild(deleteButton);
                 listItem.appendChild(doneButton);
                 listItem.appendChild(editButton);
                 todoList.appendChild(listItem);
             }
         });
-        if (countNumberCompleted) {
-            var deleteAllButton = document.createElement("button");
-            deleteAllButton.className = "btn btn-default delete";
-            deleteAllButton.onclick = deleteCompletedTodoItems;
-            //countLabel.innerText += String.fromCharCode(13) + "Delete all completed tasks ";
-            //countLabel.appendChild(deleteAllButton);
-        }
         if (todos.length > 0) {
-            loadFilterButtons(true);
+            loadFilterButtons(true, todos.length, countNumberRemaining, todos.length-countNumberRemaining);
         }
         else {
             loadFilterButtons(false);
@@ -140,7 +136,7 @@ function setHeader(countNumberRemaining) {
     header.appendChild(remainingText);
 }
 
-function loadFilterButtons(ifLoad) {
+function loadFilterButtons(ifLoad, noTodo, activeTodo, completedTodo) {
     while (filterButtons.firstChild) {
         filterButtons.removeChild(filterButtons.firstChild);
     }
@@ -153,11 +149,11 @@ function loadFilterButtons(ifLoad) {
         var activeButton = document.createElement("button");
         var completedButton = document.createElement("button");
         allText.className = "table-text";
-        allText.textContent = "Hello";
+        allText.textContent = noTodo;
         activeText.className = "table-text";
-        activeText.textContent = "Hello";
+        activeText.textContent = activeTodo;
         completeText.className = "table-text";
-        completeText.textContent = "Hello";
+        completeText.textContent = completedTodo;
         allButton.onclick = allDisplay;
         allButton.className = "btn btn-default";
         allButton.innerText = "All";
@@ -173,6 +169,13 @@ function loadFilterButtons(ifLoad) {
         tableRow.appendChild(activeText);
         tableRow.appendChild(completedButton);
         tableRow.appendChild(completeText);
+        if (completedTodo > 0) {
+            var deleteAllButton = document.createElement("button");
+            deleteAllButton.textContent = "Delete all";
+            deleteAllButton.className = "btn btn-default delete";
+            deleteAllButton.onclick = deleteCompletedTodoItems;
+            tableRow.appendChild(deleteAllButton);
+        }
         filterButtons.appendChild(tableRow);
     }
 }
