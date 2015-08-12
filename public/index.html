@@ -17,12 +17,12 @@
             <table class="table table-" id="filter-buttons"></table>
         </section>
         <section class="left">
+            <form id="todo-form">
+                <input class="form-control input-control" id="new-todo" placeholder="What needs to be done?" autofocus>
+                <input class="btn btn-default input-button-control" id="submit-todo" type="submit" value="Create">
+            </form>
             <h2 id="todo-list-placeholder"></h2>
             <ul class="list-group" id="todo-list"></ul>
-            <form id="todo-form">
-                <input class="input-sm" id="new-todo" placeholder="What needs to be done?" autofocus>
-                <input class="btn btn-default" id="submit-todo" type="submit" value="Create">
-            </form>
             <div id="error"></div>
         </section>
         <script src="main.js" type="text/javascript"></script>
