@@ -99,6 +99,21 @@ testing.describe("end to end", function() {
                 assert.equal(text, "true");
             });
         });
+        testing.it("update todo item to completed", function() {
+            helpers.navigateToSite();
+            helpers.addTodo("New todo item");
+            helpers.waitTodo();
+            helpers.updateTodo();
+            helpers.waitTodo();
+            helpers.getUpdateButtonText().then(function(text) {
+                assert.equal(text, "true");
+            });
+            helpers.updateTodo();
+            helpers.waitTodo();
+            helpers.getUpdateButtonText().then(function(text) {
+                assert.equal(text, "false");
+            });
+        });
     });
 });
 

@@ -1,10 +1,11 @@
-var countLabel = document.getElementById("count-label");
+//var countLabel = document.getElementById("count-label");
 var filterButtons = document.getElementById("filter-buttons");
 var todoList = document.getElementById("todo-list");
 var todoListPlaceholder = document.getElementById("todo-list-placeholder");
 var form = document.getElementById("todo-form");
 var todoTitle = document.getElementById("new-todo");
 var error = document.getElementById("error");
+var header = document.getElementById("header");
 var sortMethod = "none";
 
 form.onsubmit = function(event) {
@@ -70,8 +71,12 @@ function reloadTodoList() {
     var countNumberRemaining = 0;
     var countNumberCompleted = false;
     getTodoList(function(todos) {
+        countNumberRemaining = todos.length;
         todoListPlaceholder.style.display = "none";
         todos.forEach(function(todo) {
+            if (todo.isComplete) {
+                countNumberRemaining--;
+            }
             var todoFiltered = todoListDisplayFilter(todo, sortMethod);
             if (todoFiltered !== undefined) {
                 var listItem = document.createElement("li");
@@ -88,6 +93,7 @@ function reloadTodoList() {
                 doneButton.className = "btn btn-default glyphicon glyphicon-ok left-button";
                 doneButton.setAttribute("id", "done-todo");
                 doneButton.setAttribute("value", todoFiltered.id);
+                doneButton.setAttribute("isComplete", "false");
                 editButton.onclick = editTodoItem;
                 editButton.className = "btn btn-default glyphicon glyphicon-pencil right-button";
                 editButton.setAttribute("id", "edit-todo");
@@ -98,48 +104,77 @@ function reloadTodoList() {
                     doneButton.setAttribute("isComplete", "true");
                     countNumberCompleted = true;
                 }
-                else {
-                    countNumberRemaining++;
-                }
                 listItem.appendChild(deleteButton);
                 listItem.appendChild(doneButton);
                 listItem.appendChild(editButton);
                 todoList.appendChild(listItem);
-                countLabel.textContent = "Remaining tasks: " + countNumberRemaining;
             }
         });
         if (countNumberCompleted) {
             var deleteAllButton = document.createElement("button");
             deleteAllButton.className = "btn btn-default delete";
             deleteAllButton.onclick = deleteCompletedTodoItems;
-            countLabel.innerText += String.fromCharCode(13) + "Delete all completed tasks ";
-            countLabel.appendChild(deleteAllButton);
+            //countLabel.innerText += String.fromCharCode(13) + "Delete all completed tasks ";
+            //countLabel.appendChild(deleteAllButton);
         }
         if (todos.length > 0) {
-            loadFilterButtons();
+            loadFilterButtons(true);
         }
+        else {
+            loadFilterButtons(false);
+        }
+        setHeader(countNumberRemaining);
     });
 }
 
-function loadFilterButtons() {
+function setHeader(countNumberRemaining) {
+    while (header.firstChild) {
+        header.removeChild(header.firstChild);
+    }
+    var headerTitle = document.createElement("h1");
+    var remainingText = document.createElement("h4");
+    headerTitle.textContent = "TODO List";
+    remainingText.textContent = "Remaining tasks: " + countNumberRemaining;
+    remainingText.className = "header-remaining";
+    header.appendChild(headerTitle);
+    header.appendChild(remainingText);
+}
+
+function loadFilterButtons(ifLoad) {
     while (filterButtons.firstChild) {
         filterButtons.removeChild(filterButtons.firstChild);
     }
-    var allButton = document.createElement("button");
-    var activeButton = document.createElement("button");
-    var completedButton = document.createElement("button");
-    allButton.onclick = allDisplay;
-    allButton.className = "btn btn-default";
-    allButton.innerText = "All";
-    activeButton.onclick = activeDisplay;
-    activeButton.className = "btn btn-default";
-    activeButton.innerText = "Active";
-    completedButton.onclick = completedDisplay;
-    completedButton.className = "btn btn-default";
-    completedButton.innerText = "Completed";
-    filterButtons.appendChild(allButton);
-    filterButtons.appendChild(activeButton);
-    filterButtons.appendChild(completedButton);
+    if (ifLoad) {
+        var tableRow = document.createElement("tr");
+        var allText = document.createElement("textField");
+        var activeText = document.createElement("textField");
+        var completeText = document.createElement("textField");
+        var allButton = document.createElement("button");
+        var activeButton = document.createElement("button");
+        var completedButton = document.createElement("button");
+        allText.className = "table-text";
+        allText.textContent = "Hello";
+        activeText.className = "table-text";
+        activeText.textContent = "Hello";
+        completeText.className = "table-text";
+        completeText.textContent = "Hello";
+        allButton.onclick = allDisplay;
+        allButton.className = "btn btn-default";
+        allButton.innerText = "All";
+        activeButton.onclick = activeDisplay;
+        activeButton.className = "btn btn-default";
+        activeButton.innerText = "Active";
+        completedButton.onclick = completedDisplay;
+        completedButton.className = "btn btn-default";
+        completedButton.innerText = "Completed";
+        tableRow.appendChild(allButton);
+        tableRow.appendChild(allText);
+        tableRow.appendChild(activeButton);
+        tableRow.appendChild(activeText);
+        tableRow.appendChild(completedButton);
+        tableRow.appendChild(completeText);
+        filterButtons.appendChild(tableRow);
+    }
 }
 
 function allDisplay() {

@@ -18,15 +18,30 @@ h1 {
 }
 
 h1 {
-    display: block;
+    display: inline-flex;
     font-size: 34px;
     line-height: 34px;
+    padding-left: 5%;
     color: rgba(255, 255, 255, 0.87);
 }
 
+h4 {
+    display: inline-flex;
+    padding-left: 5%;
+}
+
+li {
+    width: 100%;
+    height: 60px;
+    overflow: auto;
+}
+
+.table-text {
+    padding-left: 2%;
+    padding-right: 2%;
+}
+
 .delete {
-    background-image: url(http://png-1.findicons.com/files/icons/99/office/16/delete.png);
-    background-repeat: no-repeat;
     cursor: pointer;
     height: 19px;
     width: 19px;
@@ -34,22 +49,16 @@ h1 {
 }
 
 .complete {
-    background-image: url(http://png-1.findicons.com/files/icons/767/wp_woothemes_ultimate/16/checkmark.png);
-    background-repeat: no-repeat;
     cursor: pointer;
     height: 19px;
     width: 19px;
     padding: 0px;
 }
 
-section.left {
-    float: left;
-    width: 40%;
-}
-
 .right {
     float: right;
-    padding-right: 20%;
+    width: 40%;
+    padding-right: 5%;
 }
 
 .right-button {
@@ -66,12 +75,16 @@ section.left {
     float: left;
 }
 
-li {
-    width: 100%;
-    height: 55px;
+.header-remaining {
+    color: white;
 }
 
 li.completedTask {
     color: #008800;
     font-weight: bold;
+}
+
+section.left {
+    float: left;
+    width: 40%;
 }
