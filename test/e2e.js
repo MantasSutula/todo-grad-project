@@ -69,7 +69,8 @@ testing.describe("end to end", function() {
         testing.it("delete todo item", function() {
             helpers.navigateToSite();
             helpers.addTodo("New todo item");
-            helpers.removeTodo(0);
+            helpers.waitTodo();
+            helpers.removeTodo();
             helpers.getTodoList().then(function (elements) {
                 assert.equal(elements.length, 0);
             });
@@ -78,8 +79,10 @@ testing.describe("end to end", function() {
             helpers.navigateToSite();
             helpers.addTodo("New todo item");
             helpers.addTodo("Another new todo item");
-            helpers.removeTodo(0);
-            helpers.removeTodo(1);
+            helpers.waitTodo();
+            helpers.removeTodo();
+            helpers.waitTodo();
+            helpers.removeTodo();
             helpers.getTodoList().then(function(elements) {
                 assert.equal(elements.length, 0);
             });
