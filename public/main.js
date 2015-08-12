@@ -16,7 +16,7 @@ form.onsubmit = function(event) {
     event.preventDefault();
 };
 
-function createTodo(title, callback) {
+function createTodo(title) {
     fetch("/api/todo", {
         method: "post",
         headers: {
@@ -41,20 +41,6 @@ function createTodo(title, callback) {
             error.textContent = "Failed to create item. Server returned " + err.status +
             " - " + err.statusText;
         });
-    //var createRequest = new XMLHttpRequest();
-    //createRequest.open("POST", "/api/todo");
-    //createRequest.setRequestHeader("Content-type", "application/json");
-    //createRequest.send(JSON.stringify({
-    //    title: title,
-    //    isComplete: false
-    //}));
-    //createRequest.onload = function() {
-    //    if (this.status === 201) {
-    //        callback();
-    //    } else {
-    //        error.textContent = "Failed to create item. Server returned " + this.status + " - " + this.responseText;
-    //    }
-    //};
 }
 
 function getTodoList(callback) {
@@ -74,17 +60,6 @@ function getTodoList(callback) {
         error.textContent = ("Failed to get list. Server returned " + err.status +
         " - " + err.statusText);
     });
-    //console.log("Starting XML");
-    //var createRequest = new XMLHttpRequest();
-    //createRequest.open("GET", "/api/todo");
-    //createRequest.onload = function() {
-    //    if (this.status === 200) {
-    //        callback(JSON.parse(this.responseText));
-    //    } else {
-    //        error.textContent = "Failed to get list. Server returned " + this.status + " - " + this.responseText;
-    //    }
-    //};
-    //createRequest.send();
 }
 
 function reloadTodoList() {
@@ -103,6 +78,8 @@ function reloadTodoList() {
                 var deleteButton = document.createElement("button");
                 var doneButton = document.createElement("button");
                 var editButton = document.createElement("button");
+                listItem.textContent = todoFiltered.title;
+                listItem.className = "list-group-item";
                 deleteButton.onclick = deleteTodoItem;
                 deleteButton.className = "btn btn-default glyphicon glyphicon-trash right-button";
                 deleteButton.setAttribute("id", "delete-todo");
@@ -113,9 +90,9 @@ function reloadTodoList() {
                 doneButton.setAttribute("value", todoFiltered.id);
                 editButton.onclick = editTodoItem;
                 editButton.className = "btn btn-default glyphicon glyphicon-pencil right-button";
+                editButton.setAttribute("id", "edit-todo");
                 editButton.setAttribute("value", todoFiltered.id);
-                listItem.textContent = todoFiltered.title;
-                listItem.className = "list-group-item";
+                editButton.setAttribute("currentText", todoFiltered.title);
                 if (todoFiltered.isComplete) {
                     listItem.className = "list-group-item list-group-item-success";
                     doneButton.setAttribute("isComplete", "true");
@@ -188,16 +165,10 @@ function todoListDisplayFilter(todoParsed, filterType) {
         if (todoParsed.isComplete === false) {
             return todoParsed;
         }
-        else {
-            return;
-        }
     }
     else if (filterType === "completed") {
         if (todoParsed.isComplete === true) {
             return todoParsed;
-        }
-        else {
-            return;
         }
     }
 }
@@ -219,10 +190,6 @@ function deleteTodoItem() {
             error.textContent = "Failed to delete item. Server returned " + err.status +
             " - " + err.statusText;
         });
-
-    //var createRequest = new XMLHttpRequest();
-    //createRequest.open("DELETE", "/api/todo/" + this.value);
-    //createRequest.send();
 }
 
 function deleteCompletedTodoItems() {
@@ -245,9 +212,6 @@ function deleteCompletedTodoItems() {
                         error.textContent = "Failed to delete item. Server returned " + err.status +
                         " - " + err.statusText;
                     });
-                //var createRequest = new XMLHttpRequest();
-                //createRequest.open("DELETE", "/api/todo/" + todo.id);
-                //createRequest.send();
             }
         });
         reloadTodoList();
@@ -282,62 +246,35 @@ function doneTodoItem() {
             error.textContent = "Failed to update item. Server returned " + err.status +
             " - " + err.statusText;
         });
-
-    //var createRequest = new XMLHttpRequest();
-    //createRequest.open("PUT", "/api/todo/" + this.value);
-    //createRequest.setRequestHeader("Content-type", "application/json");
-    //createRequest.send(JSON.stringify({
-    //    isComplete: isCompleteBoolean
-    //}));
-    //createRequest.onload = function() {
-    //    if (this.status === 200 || this.status === 201) {
-    //
-    //    } else {
-    //        error.textContent = "Failed to create item. Server returned " + this.status + " - " + this.responseText;
-    //    }
-    //};
-    //reloadTodoList();
 }
 
 function editTodoItem() {
-    var todoTitle = window.prompt("Enter the new title", "Enter the new todo title");
-    fetch("/api/todo/" + this.value, {
-        method: "put",
-        headers: {
-            "Accept": "application/json",
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            title: todoTitle
+    var todoTitle = window.prompt("Enter the new title", this.getAttribute("currentText"));
+    if (todoTitle) {
+        fetch("/api/todo/" + this.value, {
+            method: "put",
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                title: todoTitle
+            })
         })
-    })
-        .then(function(response) {
-            if (response.status === 200 || response.status === 201) {
-                reloadTodoList();
-            }
-            else {
-                error.textContent = "Failed to update item. Server returned " + response.status +
-                " - " + response.statusText;
-            }
-        })
-        .catch(function(err) {
-            error.textContent = "Failed to update item. Server returned " + err.status +
-            " - " + err.statusText;
-        });
-    //var createRequest = new XMLHttpRequest();
-    //createRequest.open("PUT", "/api/todo/" + this.value);
-    //createRequest.setRequestHeader("Content-type", "application/json");
-    //createRequest.send(JSON.stringify({
-    //    title: todoTitle
-    //}));
-    //createRequest.onload = function() {
-    //    if (this.status === 200 || this.status === 201) {
-    //
-    //    } else {
-    //        error.textContent = "Failed to create item. Server returned " + this.status + " - " + this.responseText;
-    //    }
-    //};
-    //reloadTodoList();
+            .then(function (response) {
+                if (response.status === 200 || response.status === 201) {
+                    reloadTodoList();
+                }
+                else {
+                    error.textContent = "Failed to update item. Server returned " + response.status +
+                        " - " + response.statusText;
+                }
+            })
+            .catch(function (err) {
+                error.textContent = "Failed to update item. Server returned " + err.status +
+                    " - " + err.statusText;
+            });
+    }
 }
 
 reloadTodoList();
