@@ -88,5 +88,17 @@ testing.describe("end to end", function() {
             });
         });
     });
+    testing.describe("on update todo item", function() {
+        testing.it("update todo item to completed", function() {
+            helpers.navigateToSite();
+            helpers.addTodo("New todo item");
+            helpers.waitTodo();
+            helpers.updateTodo();
+            helpers.waitTodo();
+            helpers.getUpdateButtonText().then(function(text) {
+                assert.equal(text, "true");
+            });
+        });
+    });
 });
 

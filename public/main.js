@@ -109,6 +109,7 @@ function reloadTodoList() {
                 deleteButton.setAttribute("value", todoFiltered.id);
                 doneButton.onclick = doneTodoItem;
                 doneButton.className = "btn btn-default glyphicon glyphicon-ok left-button";
+                doneButton.setAttribute("id", "done-todo");
                 doneButton.setAttribute("value", todoFiltered.id);
                 editButton.onclick = editTodoItem;
                 editButton.className = "btn btn-default glyphicon glyphicon-pencil right-button";
@@ -117,7 +118,7 @@ function reloadTodoList() {
                 listItem.className = "list-group-item";
                 if (todoFiltered.isComplete) {
                     listItem.className = "list-group-item list-group-item-success";
-                    doneButton.setAttribute("id", "true");
+                    doneButton.setAttribute("isComplete", "true");
                     countNumberCompleted = true;
                 }
                 else {
@@ -255,7 +256,7 @@ function deleteCompletedTodoItems() {
 
 function doneTodoItem() {
     var isCompleteBoolean = true;
-    if (this.id === "true") {
+    if (this.getAttribute("isComplete") === "true") {
         isCompleteBoolean = false;
     }
     fetch("/api/todo/" + this.value, {
@@ -299,7 +300,7 @@ function doneTodoItem() {
 }
 
 function editTodoItem() {
-    var todoTitle = window.prompt("Enter the new title", "Nice!");
+    var todoTitle = window.prompt("Enter the new title", "Enter the new todo title");
     fetch("/api/todo/" + this.value, {
         method: "put",
         headers: {
@@ -340,4 +341,4 @@ function editTodoItem() {
 }
 
 reloadTodoList();
-setInterval(reloadTodoList, 10000);
+//setInterval(reloadTodoList, 10000);

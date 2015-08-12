@@ -88,6 +88,14 @@ module.exports.removeTodo = function() {
     driver.findElement(webdriver.By.id("delete-todo")).click();
 };
 
+module.exports.updateTodo = function() {
+    driver.findElement(webdriver.By.id("done-todo")).click();
+};
+
+module.exports.getUpdateButtonText = function() {
+    return driver.findElement(webdriver.By.id("done-todo")).getAttribute("isComplete");
+};
+
 module.exports.setupErrorRoute = function(action, route) {
     if (action === "get") {
         router.get(route, function(req, res) {
@@ -100,7 +108,7 @@ module.exports.setupErrorRoute = function(action, route) {
         });
     }
     if (action === "delete") {
-        router.post(route, function(req, res) {
+        router.post(route, function (req, res) {
             res.sendStatus(500);
         });
     }

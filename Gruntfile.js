@@ -80,11 +80,10 @@ module.exports = function(grunt) {
                 }
             }
         },
-
         watch: {
             express: {
-                files: [ "server/*.js" ],
-                tasks: [ "express:dev" ],
+                files: ["server/*.js"],
+                tasks: ["express:dev"],
                 options: {
                     spawn: false
                 }
@@ -116,5 +115,5 @@ module.exports = function(grunt) {
     grunt.registerTask("ci-test", ["check", "mochaTest:ci", "mocha_istanbul:ci", "istanbul_report",
         "istanbul_check_coverage"]);
     grunt.registerTask("default", "test");
-    grunt.registerTask("server", [ "express:dev", "watch" ]);
+    grunt.registerTask("server", ["express:dev", "watch"]);
 };
