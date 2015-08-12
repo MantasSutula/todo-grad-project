@@ -5,7 +5,6 @@ var todoListPlaceholder = document.getElementById("todo-list-placeholder");
 var form = document.getElementById("todo-form");
 var todoTitle = document.getElementById("new-todo");
 var error = document.getElementById("error");
-var header = document.getElementById("header");
 var sortMethod = "none";
 
 form.onsubmit = function(event) {
@@ -114,26 +113,12 @@ function reloadTodoList() {
             }
         });
         if (todos.length > 0) {
-            loadFilterButtons(true, todos.length, countNumberRemaining, todos.length-countNumberRemaining);
+            loadFilterButtons(true, todos.length, countNumberRemaining, todos.length - countNumberRemaining);
         }
         else {
             loadFilterButtons(false);
         }
-        setHeader(countNumberRemaining);
     });
-}
-
-function setHeader(countNumberRemaining) {
-    while (header.firstChild) {
-        header.removeChild(header.firstChild);
-    }
-    var headerTitle = document.createElement("h1");
-    var remainingText = document.createElement("h4");
-    headerTitle.textContent = "TODO List";
-    remainingText.textContent = "Remaining tasks: " + countNumberRemaining;
-    remainingText.className = "header-remaining";
-    header.appendChild(headerTitle);
-    header.appendChild(remainingText);
 }
 
 function loadFilterButtons(ifLoad, noTodo, activeTodo, completedTodo) {
@@ -142,36 +127,24 @@ function loadFilterButtons(ifLoad, noTodo, activeTodo, completedTodo) {
     }
     if (ifLoad) {
         var tableRow = document.createElement("tr");
-        var allText = document.createElement("textField");
-        var activeText = document.createElement("textField");
-        var completeText = document.createElement("textField");
         var allButton = document.createElement("button");
         var activeButton = document.createElement("button");
         var completedButton = document.createElement("button");
-        allText.className = "table-text";
-        allText.textContent = noTodo;
-        activeText.className = "table-text";
-        activeText.textContent = activeTodo;
-        completeText.className = "table-text";
-        completeText.textContent = completedTodo;
         allButton.onclick = allDisplay;
         allButton.className = "btn btn-default";
-        allButton.innerText = "All";
+        allButton.innerText = "All [" + noTodo + "]";
         activeButton.onclick = activeDisplay;
         activeButton.className = "btn btn-default";
-        activeButton.innerText = "Active";
+        activeButton.innerText = "Active [" + activeTodo + "]";
         completedButton.onclick = completedDisplay;
         completedButton.className = "btn btn-default";
-        completedButton.innerText = "Completed";
+        completedButton.innerText = "Completed [" + completedTodo + "]";
         tableRow.appendChild(allButton);
-        tableRow.appendChild(allText);
         tableRow.appendChild(activeButton);
-        tableRow.appendChild(activeText);
         tableRow.appendChild(completedButton);
-        tableRow.appendChild(completeText);
-        if (completedTodo > 0) {
+        if (completedTodo > 0 && sortMethod !== "active") {
             var deleteAllButton = document.createElement("button");
-            deleteAllButton.textContent = "Delete all";
+            deleteAllButton.textContent = "Delete all completed";
             deleteAllButton.className = "btn btn-default delete";
             deleteAllButton.onclick = deleteCompletedTodoItems;
             tableRow.appendChild(deleteAllButton);
