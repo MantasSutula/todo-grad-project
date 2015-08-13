@@ -8,7 +8,7 @@ module.exports = function(port, middleware, callback) {
     if (middleware) {
         app.use(middleware);
     }
-    app.use(express.static("public"));
+    app.use(express.static("app"));
     app.use("/fetch/", express.static("node_modules/whatwg-fetch"));
     app.use(bodyParser.json());
 

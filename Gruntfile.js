@@ -11,13 +11,13 @@ module.exports = function(grunt) {
     var artifactsLocation = "build_artifacts";
     grunt.initConfig({
         jshint: {
-            all: ["Gruntfile.js", "server.js", "server/**/*.js", "test/**/*.js", "public/**/*.js"],
+            all: ["Gruntfile.js", "server.js", "server/**/*.js", "test/**/*.js", "app/**/*.js"],
             options: {
                 jshintrc: true
             }
         },
         jscs: {
-            all: ["Gruntfile.js", "server.js", "server/**/*.js", "test/**/*.js", "public/**/*.js"]
+            all: ["Gruntfile.js", "server.js", "server/**/*.js", "test/**/*.js", "app/**/*.js"]
         },
         mochaTest: {
             test: {
