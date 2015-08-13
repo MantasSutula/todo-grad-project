@@ -13,7 +13,7 @@
         <link href="main.css" rel="stylesheet" type="text/css">
         <link rel="icon" type="image/ico" href="favicon.ico">
     </head>
-    <body>
+    <body class="container">
         <header>
             <h1>TODO List</h1>
         </header>
@@ -22,10 +22,15 @@
             <table class="table table-" id="filter-buttons"></table>
         </section>
         <section class="left">
-            <form id="todo-form">
-                <input class="form-control input-control" id="new-todo" placeholder="What needs to be done?" autofocus>
+            <form name="todo-form" ng-submit="submitTodo(todo)">
+                <input class="form-control input-control" type="text" required="true" ng-model="todo.title" id="new-todo" placeholder="What needs to be done?" autofocus>
                 <input class="btn btn-default input-button-control" id="submit-todo" type="submit" value="Create">
+                <button type="submit">Submit</button>
             </form>
+            <h2>TODO Title</h2>
+            {{todo}}
+            <h2>Form</h2>
+            {{todo-form}}
             <h2 id="todo-list-placeholder"></h2>
             <ul class="list-group" id="todo-list"></ul>
             <div id="error"></div>
@@ -34,14 +39,11 @@
             <li><a href="#/view1">view1</a></li>
             <li><a href="#/view2">view2</a></li>
         </ul>
-        {{"hello"}}
         <!--[if lt IE 7]>
           <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
 
         <div ng-view></div>
-
-        <div>Angular seed app: v<span app-version></span></div>
 
         <!-- In production use:
         <script src="//ajax.googleapis.com/ajax/libs/angularjs/x.x.x/angular.min.js"></script>
