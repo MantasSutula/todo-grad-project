@@ -1,1 +1,58 @@
-<p>This is the partial for view 1.</p>
+<div class="col-sm-3">
+    <div class="todos">
+        <div class="simple-todo" ng-repeat="(todoId, todo) in main.todos"
+            ng-click="main.setEditedTodo(todoId, todo)">
+            {{todo.title}} {{todo.isComplete}}
+            <input type="checkbox" ng-model="model.isComplete"/>Is complete
+        </div>
+    </div>
+</div>
+<div class="col-sm-8">
+    <!-- CREATE TODO-->
+    <div ng-if="!main.isEditing" class="col-xs-12 todo-details">
+        <h4>Create a new Todo</h4>
+        <hr/>
+        <form name="main.createForm" class="create-form" role="form" ng-submit="main.createTodo(main.newTodo, main.createForm.$valid)">
+            <input type="text" ng-model="main.newTodo.title" required="true">
+            <button type="submit">Create</button>
+        </form>
+    </div>
+    <!-- EDIT TODO-->
+    <div ng-if="main.isEditing" class="col-xs-12 todo-details">
+        <h4>Editing {{main.editedTodo.title}}</h4>
+        <hr/>
+        <form name="main.updateForm" class="edit-form" role="form"
+            ng-submit="main.setEditedTodo(main.editedTodoId, main.editedTodo, main.updateForm.$valid)">
+            <input type="text" ng-model="main.editedTodo.title" required="true">
+            <input type="text" ng-model="main.editedTodo.isComplete" required="true">
+            <button type="submit">Update</button>
+            <button type="button" ng-click="main.cancelEditing()">Cancel</button>
+        </form>
+    </div>
+</div>
+
+<!--<section class="left">-->
+    <!--<form name="main.todoForm" ng-submit="main.submitTodo(main.todo)">-->
+        <!--<input class="form-control input-control" type="text" ng-required="true" ng-model="main.todo.title" id="new-todo" placeholder="What needs to be done?" autofocus>-->
+        <!--&lt;!&ndash;<input class="btn btn-default input-button-control" id="submit-todo" type="submit" value="Create">&ndash;&gt;-->
+        <!--<button type="submit">Submit</button>-->
+    <!--</form>-->
+    <!--<h2>TODO Title</h2>-->
+    <!--{{main.todo.title}}-->
+    <!--<h2>Form</h2>-->
+    <!--{{main.todoForm.$valid}}-->
+    <!--<div class="alert alert-success" role="alert" ng-if="main.currentTodo">-->
+        <!--<ul class="list">-->
+            <!--<li class="list-group-item">-->
+                <!--<h2>{{main.currentTodo.title}}</h2>-->
+                <!--<h3>{{main.isComplete}}</h3>-->
+                <!--<input type="checkbox" ng-model=""-->
+                <!--<button type="button" class="close" ng-click="main.setCurrentTodo(null)">&times;</button>-->
+            <!--</li>-->
+        <!--</ul>-->
+    <!--</div>-->
+    <!--<div ng-repeat="todoItem in main.todos" ng-click="main.setCurrentTodo(todoItem)"></div>-->
+    <!--<h2 id="todo-list-placeholder"></h2>-->
+    <!--<ul class="list-group" id="todo-list"></ul>-->
+    <!--<div id="error"></div>-->
+<!--</section>-->

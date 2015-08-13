@@ -13,7 +13,7 @@
         <link href="main.css" rel="stylesheet" type="text/css">
         <link rel="icon" type="image/ico" href="favicon.ico">
     </head>
-    <body class="container">
+    <body class="" ng-controller="View1Ctrl as main">
         <header>
             <h1>TODO List</h1>
         </header>
@@ -21,27 +21,41 @@
         <section>
             <table class="table table-" id="filter-buttons"></table>
         </section>
-        <section class="left">
-            <form name="todo-form" ng-submit="submitTodo(todo)">
-                <input class="form-control input-control" type="text" required="true" ng-model="todo.title" id="new-todo" placeholder="What needs to be done?" autofocus>
-                <input class="btn btn-default input-button-control" id="submit-todo" type="submit" value="Create">
-                <button type="submit">Submit</button>
-            </form>
-            <h2>TODO Title</h2>
-            {{todo}}
-            <h2>Form</h2>
-            {{todo-form}}
-            <h2 id="todo-list-placeholder"></h2>
-            <ul class="list-group" id="todo-list"></ul>
-            <div id="error"></div>
-        </section>
-        <ul class="menu">
-            <li><a href="#/view1">view1</a></li>
-            <li><a href="#/view2">view2</a></li>
-        </ul>
-        <!--[if lt IE 7]>
-          <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-        <![endif]-->
+        <!--<section class="left">-->
+            <!--<form name="main.todoForm" ng-submit="main.submitTodo(main.todo)">-->
+                <!--<input class="form-control input-control" type="text" ng-required="true" ng-model="main.todo.title" id="new-todo" placeholder="What needs to be done?" autofocus>-->
+                <!--&lt;!&ndash;<input class="btn btn-default input-button-control" id="submit-todo" type="submit" value="Create">&ndash;&gt;-->
+                <!--<button type="submit">Submit</button>-->
+            <!--</form>-->
+            <!--<h2>TODO Title</h2>-->
+            <!--{{main.todo.title}}-->
+            <!--<h2>Form</h2>-->
+            <!--{{main.todoForm.$valid}}-->
+            <!--<div class="alert alert-succes" role="alert" ng-if="main.currentTodo">-->
+                <!--<ul class="list">-->
+                    <!--<li class="list-group-item">-->
+                        <!--<h2>{{main.currentTodo.title}}</h2>-->
+                        <!--<h3>{{main.isComplete}}</h3>-->
+                        <!--<input type="checkbox" ng-model=""-->
+                        <!--<button type="button" class="close" ng-click="main.setCurrentTodo(null)">&times;</button>-->
+                    <!--</li>-->
+                <!--</ul>-->
+            <!--</div>-->
+            <!--<div ng-repeat="todoItem in main.todos" ng-click="main.setCurrentTodo(todoItem)"></div>-->
+            <!--<h2 id="todo-list-placeholder"></h2>-->
+            <!--<ul class="list-group" id="todo-list"></ul>-->
+            <!--<div id="error"></div>-->
+        <!--</section>-->
+
+
+
+        <!--<ul class="menu">-->
+            <!--<li><a href="#/view1">view1</a></li>-->
+            <!--<li><a href="#/view2">view2</a></li>-->
+        <!--</ul>-->
+        <!--&lt;!&ndash;[if lt IE 7]>-->
+          <!--<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>-->
+        <!--<![endif]&ndash;&gt;-->
 
         <div ng-view></div>
 
