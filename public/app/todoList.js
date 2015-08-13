@@ -2,7 +2,8 @@
 
 angular.module("todoList", [
     "ui.router",
-    'ngAnimate'
+    'ngAnimate',
+    'firebase'
 ])
     .constant("ENDPOINT_URI", "http://localhost:8080")
     .config(function ($stateProvider, $urlRouterProvider) {
@@ -20,7 +21,7 @@ angular.module("todoList", [
         $rootScope.$on('$stateChangeError', function (event, toState, toParams, fromState, fromParams, error) {
             event.preventDefault();
             if (error === 'AUTH_REQUIRED') {
-                $state.go('login');
+                $state.go('todos');
             }
         });
     })
