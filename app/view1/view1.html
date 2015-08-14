@@ -1,51 +1,55 @@
-<header>
-    <h1>TODO List</h1>
-</header>
-<div id="count-label"></div>
-<section>
-    <table class="table table-" id="filter-buttons"></table>
-</section>
-<div class="col-sm-8">
-    <h4>TODO List</h4>
-    <ul class="list-group" ng-repeat="todo in main.todos">
-        <li class="list-group-item list-group-item-success" ng-if="todo.isComplete">
-            <span class="completedTask">{{todo.title}}</span>
-            <button type="button" class="btn btn-default left-button" ng-click="main.updateComplete(todo)"><span class="glyphicon glyphicon-ok"></span></button>
-            <button type="button" class="btn btn-default right-button" ng-click="main.deleteTodo(todo.id)"><span class="glyphicon glyphicon-trash"></span></button>
-            <button type="button" class="btn btn-default right-button-edit" ng-click="main.setEditedTodo(todo.id, todo)"><span class="glyphicon glyphicon-pencil"></span></button>
-        <li class="list-group-item" ng-if="!todo.isComplete">
-            <span class="notCompletedTask">{{todo.title}}</span>
-            <button type="button" class="btn btn-default left-button" ng-click="main.updateComplete(todo)"><span class="glyphicon glyphicon-ok"></span></button>
-            <button type="button" class="btn btn-default right-button" ng-click="main.deleteTodo(todo.id)"><span class="glyphicon glyphicon-trash"></span></button>
-            <button type="button" class="btn btn-default right-button-edit" ng-click="main.setEditedTodo(todo.id, todo)"><span class="glyphicon glyphicon-pencil"></span></button>
-        </li>
-    </ul>
-</div>
-<div class="alert alert-danger" role="alert" ng-if="main.error">
-    {{man.error}}
-</div>
-<div class="col-sm-4">
-    <!-- CREATE TODO-->
-    <div ng-if="!main.isEditing" class="col-xs-12 todo-details">
-        <h4>Create a new Todo</h4>
-        <hr/>
-        <form name="main.createForm" role="form" ng-submit="main.createTodo(main.newTodo, main.createForm.$valid)">
-            <input type="text" class="form-control" ng-model="main.newTodo.title" required="true">
-            <button type="submit" class="form-control edit-button">Create</button>
-        </form>
+<div class="container">
+    <header>
+        <h1>TODO List</h1>
+    </header>
+    <div>
+        <button type="button" class="btn btn-default" ng-click="main.showAll()"><span>All ({{main.allNumber()}})</span></button>
+        <button type="button" class="btn btn-default" ng-click="main.showActive()"><span>Active ({{main.activeNumber()}})</span></button>
+        <button type="button" class="btn btn-default" ng-click="main.showCompleted()"><span>Completed ({{main.completedNumber()}})</span></button>
+        <button type="button" class="btn btn-default delete" ng-if="main.completedNumber() > 0" ng-click="main.deleteAllActiveTodos()">Delete All Completed</button>
     </div>
-    <!-- EDIT TODO-->
-    <div ng-if="main.isEditing" class="col-xs-12 todo-details">
-        <h4>Editing {{main.editedTodo.title}}</h4>
-        <hr/>
-        <form name="main.updateForm" class="edit-form" role="form"
-            ng-submit="main.updateTodo(main.editedTodo, main.updateForm.$valid)">
-            <input type="text" class="form-control" ng-model="main.editedTodo.title" required="true">
-            <button type="submit" class="form-control edit-button">Update</button>
-            <button type="button" class="form-control edit-button" ng-click="main.cancelEditing()">Cancel</button>
-        </form>
+    <div class="col-sm-8">
+        <h4>TODO List</h4>
+        <ul class="list-group" ng-repeat="todo in main.todos">
+            <li class="list-group-item list-group-item-success" ng-if="todo.isComplete">
+                <span class="completedTask">{{todo.title}}</span>
+                <button type="button" class="btn btn-default left-button" ng-click="main.updateComplete(todo)"><span class="glyphicon glyphicon-ok"></span></button>
+                <button type="button" class="btn btn-default right-button" ng-click="main.deleteTodo(todo.id)"><span class="glyphicon glyphicon-trash"></span></button>
+                <button type="button" class="btn btn-default right-button-edit" ng-click="main.setEditedTodo(todo.id, todo)"><span class="glyphicon glyphicon-pencil"></span></button>
+            <li class="list-group-item" ng-if="!todo.isComplete">
+                <span class="notCompletedTask">{{todo.title}}</span>
+                <button type="button" class="btn btn-default left-button" ng-click="main.updateComplete(todo)"><span class="glyphicon glyphicon-ok"></span></button>
+                <button type="button" class="btn btn-default right-button" ng-click="main.deleteTodo(todo.id)"><span class="glyphicon glyphicon-trash"></span></button>
+                <button type="button" class="btn btn-default right-button-edit" ng-click="main.setEditedTodo(todo.id, todo)"><span class="glyphicon glyphicon-pencil"></span></button>
+            </li>
+        </ul>
     </div>
-</div>
+    <div class="alert alert-danger" role="alert" ng-if="main.error">
+        {{man.error}}
+    </div>
+    <div class="col-sm-4">
+        <!-- CREATE TODO-->
+        <div ng-if="!main.isEditing" class="col-xs-12 todo-details">
+            <h4>Create a new Todo</h4>
+            <hr/>
+            <form name="main.createForm" role="form" ng-submit="main.createTodo(main.newTodo, main.createForm.$valid)">
+                <input type="text" class="form-control" ng-model="main.newTodo.title" required="true">
+                <button type="submit" class="form-control edit-button">Create</button>
+            </form>
+        </div>
+        <!-- EDIT TODO-->
+        <div ng-if="main.isEditing" class="col-xs-12 todo-details">
+            <h4>Editing {{main.editedTodo.title}}</h4>
+            <hr/>
+            <form name="main.updateForm" class="edit-form" role="form"
+                ng-submit="main.updateTodo(main.editedTodo, main.updateForm.$valid)">
+                <input type="text" class="form-control" ng-model="main.editedTodo.title" required="true">
+                <button type="submit" class="form-control edit-button">Update</button>
+                <button type="button" class="form-control edit-button" ng-click="main.cancelEditing()">Cancel</button>
+            </form>
+        </div>
+    </div>
+</div><
 
 <!--<section class="left">-->
     <!--<form name="main.todoForm" ng-submit="main.submitTodo(main.todo)">-->

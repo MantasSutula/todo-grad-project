@@ -103,6 +103,16 @@ angular.module('todoList.view1', [
       return $http.delete(getUrlForId(todoId)).then(extract);
     };
 
+    main.deleteAllActiveTodos = function () {
+      console.log("Delete completed todos ");
+
+      main.todos.forEach(function (item) {
+        if (item.isComplete) {
+          main.deleteTodo(item.id);
+        }
+      });
+    };
+
     main.setEditedTodo = function (todoId, todo) {
       //console.log("Updating TODO " + todo)
       //if (isValid) {
@@ -123,7 +133,7 @@ angular.module('todoList.view1', [
       main.editedTodoId = null;
       main.editedTodo = null;
       main.isEditing = false;
-    }
+    };
 
       function extract(result) {
         console.log(result.data);
@@ -131,7 +141,44 @@ angular.module('todoList.view1', [
           main.todos[main.todos.length - 1].id = result.data;
         }
         return result.data;
-      }
+      };
+
+      main.allNumber = function () {
+        //main.todos = TodoModel.getTodos;
+        return main.todos.length;
+      };
+
+      main.activeNumber = function () {
+        var activeNo = 0;
+        main.todos.forEach(function (item) {
+          if (!item.isComplete) {
+            activeNo++;
+          }
+        });
+        return activeNo;
+      };
+
+      main.completedNumber = function () {
+        var completedNo = 0;
+        main.todos.forEach(function (item) {
+          if (item.isComplete) {
+            completedNo++;
+          }
+        });
+        return completedNo;
+      };
+
+      main.showAll = function() {
+        //main.todos = TodoModel.getTodos;
+      };
+
+      main.showActive = function() {
+        main.todos = main.todos.filter(function (item) {
+          if (!item.isComplete) {
+            return item;
+          }
+        });
+      };
   })
   .factory('TodoModel', function($http, $q) {
     var todos = [
