@@ -23,9 +23,13 @@ module.exports.setupDriver = function() {
 module.exports.setupServer = function(done) {
     router = express.Router();
     if (gatheringCoverage) {
-        router.get("/main_backup.js", function(req, res) {
-            var absPath = path.join(__dirname, "..", "app", "main_backup.js");
-            res.send(instrumenter.instrumentSync(fs.readFileSync("app/main_backup.js", "utf8"), absPath));
+        router.get("/app.js", function(req, res) {
+            var absPath = path.join(__dirname, "..", "app", req.path);
+            res.send(instrumenter.instrumentSync(fs.readFileSync("app/" + req.path, "utf8"), absPath));
+        });
+        router.get("/view1", function(req, res) {
+            var absPath = path.join(__dirname, "..", "app", req.path);
+            res.send(instrumenter.instrumentSync(fs.readFileSync("app/" + req.path, "utf8"), absPath));
         });
     }
     server = createServer(testPort, router, done);
