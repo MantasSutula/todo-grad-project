@@ -1,21 +1,23 @@
-<div class="col-sm-3">
     <div class="todos">
-        <div class="simple-todo" ng-repeat="(todoId, todo) in main.todos"
+        <ul class="list-group" ng-repeat="todo in main.todos"
             ng-click="main.setEditedTodo(todoId, todo)">
-            {{todo.title}} {{todo.isComplete}}
-            <input type="checkbox" ng-model="model.isComplete"/>Is complete
-        </div>
+            <li class="list-group-item">{{todo.title }} {{todo.isComplete}}
+            <input type="checkbox" ng-model="todo.isComplete"/></li>
+        </ul>
     </div>
+<div class="alert alert-danger" role="alert" ng-if="main.error">
+    {{man.error}}
 </div>
 <div class="col-sm-8">
     <!-- CREATE TODO-->
     <div ng-if="!main.isEditing" class="col-xs-12 todo-details">
         <h4>Create a new Todo</h4>
         <hr/>
-        <form name="main.createForm" class="create-form" role="form" ng-submit="main.createTodo(main.newTodo, main.createForm.$valid)">
+        <form name="main.createForm" role="form" ng-submit="main.createTodo(main.newTodo, main.createForm.$valid)">
             <input type="text" ng-model="main.newTodo.title" required="true">
             <button type="submit">Create</button>
         </form>
+        {{main.newTodo.title}} {{main.createForm.$valid}}
     </div>
     <!-- EDIT TODO-->
     <div ng-if="main.isEditing" class="col-xs-12 todo-details">

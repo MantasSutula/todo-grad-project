@@ -18,6 +18,7 @@ module.exports = function(port, middleware, callback) {
     // Create
     app.post("/api/todo", function(req, res) {
         var todo = req.body;
+        todo.isComplete = false;
         todo.id = latestId.toString();
         latestId++;
         todos.push(todo);
