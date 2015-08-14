@@ -1,8 +1,10 @@
     <div class="todos">
-        <ul class="list-group" ng-repeat="todo in main.todos"
-            ng-click="main.setEditedTodo(todoId, todo)">
-            <li class="list-group-item">{{todo.title }} {{todo.isComplete}}
-            <input type="checkbox" ng-model="todo.isComplete"/></li>
+        <ul class="list-group" ng-repeat="todo in main.todos">
+            <li class="list-group-item"><span ng-click="main.setEditedTodo(todo.id, todo)">{{todo.title}} {{todo.isComplete}}</span>
+                <input type="checkbox" ng-model="todo.isComplete"/>
+                <input type="button" class="btn btn-default glyphicon glyphicon-ok left-button" ng-click="main.updateComplete(todo)"/>
+                <input type="button" class="btn btn-default glyphicon glyphicon-trash right-button" ng-click="main.deleteTodo(todo.id)"/>
+            </li>
         </ul>
     </div>
 <div class="alert alert-danger" role="alert" ng-if="main.error">
@@ -24,7 +26,7 @@
         <h4>Editing {{main.editedTodo.title}}</h4>
         <hr/>
         <form name="main.updateForm" class="edit-form" role="form"
-            ng-submit="main.setEditedTodo(main.editedTodoId, main.editedTodo, main.updateForm.$valid)">
+            ng-submit="main.updateTodo(main.editedTodo, main.updateForm.$valid)">
             <input type="text" ng-model="main.editedTodo.title" required="true">
             <input type="text" ng-model="main.editedTodo.isComplete" required="true">
             <button type="submit">Update</button>

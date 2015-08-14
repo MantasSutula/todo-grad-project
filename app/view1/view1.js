@@ -27,18 +27,23 @@ angular.module('todoList.view1', [
 
     main.newTodo = {
       title: '',
-      isComplete: false
+      isComplete: 'false'
     };
 
       function getUrl() {
-        return '/api/todo';
+        return '/api/todo/';
+      }
+
+      function getUrlForId(todoId) {
+        return '/api/todo/' + todoId;
       }
 
     main.resetForm = function() {
       main.loading = false;
       main.newTodo = {
         title: '',
-        isComplete: false
+        isComplete: 'false',
+        id: ''
       }
     };
 
@@ -46,29 +51,63 @@ angular.module('todoList.view1', [
       if (isValid) {
         main.loading = true;
 
+        todo.id = +main.todos[main.todos.length-1].id + +1;
+        main.todos.push(todo);
         return $http.post(getUrl(), todo).then(extract);
       };
     };
 
-    main.updateTodo = function (todoId, todo, isValid) {
+    main.updateTodo = function (todo, isValid) {
       if (isValid) {
+        console.log("Updating TODO " + todo + " title: " + todo.title + " isComplete " + todo.isComplete);
         main.loading = true;
-        // UPDATE TODO
+
         main.cancelEditing();
+
+        main.todos.forEach(function(item) {
+          if (item.id === todo.id) {
+            item.title = todo.title;
+            if (item.isComplete !== todo.isComplete)
+            {
+              item.isComplete = todo.isComplete;
+            }
+          }
+        });
+
+        return $http.put(getUrlForId(todo.id), todo).then(extract);
       }
     };
 
+    main.updateComplete = function (todo) {
+      console.log("Updating " + todo.id + " from completion status: "+ todo.isComplete + " to completion status " + !todo.isComplete);
+      todo.isComplete = !todo.isComplete;
+      return $http.put(getUrlForId(todo.id), todo).then(extract);
+    }
+
 
     main.deleteTodo = function (todoId) {
+      console.log("Deleting todo " + todoId);
       main.loading = true;
-      // DELETE TODO
+
       main.cancelEditing();
+
+      main.todos = main.todos.filter(function(item) {
+        if (item.id !== todoId) {
+          return item;
+        }
+      })
+      return $http.delete(getUrlForId(todoId)).then(extract);
     };
 
     main.setEditedTodo = function (todoId, todo) {
-      main.editedTodoId = todoId;
-      main.editedTodo = angular.copy(todo);
-      main.isEditing = true;
+      //console.log("Updating TODO " + todo)
+      //if (isValid) {
+      //  return $http.put(getUrl() + todoId, todo).then(extract);
+      console.log("Editing " + todoId);
+        main.editedTodoId = todoId;
+        main.editedTodo = angular.copy(todo);
+        main.isEditing = true;
+      //}
     };
 
     main.isCurrentTodo = function (todoId) {
@@ -83,6 +122,7 @@ angular.module('todoList.view1', [
     }
 
       function extract(result) {
+        console.log(result.data);
         return result.data;
       }
   })
