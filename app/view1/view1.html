@@ -10,17 +10,17 @@
     </div>
     <div class="col-sm-8">
         <h4>TODO List</h4>
-        <ul class="list-group" ng-repeat="todo in main.todos">
+        <ul class="list-group" ng-repeat="todo in main.displayTodos">
             <li class="list-group-item list-group-item-success" ng-if="todo.isComplete">
                 <span class="completedTask">{{todo.title}}</span>
-                <button type="button" class="btn btn-default left-button" ng-click="main.updateComplete(todo)"><span class="glyphicon glyphicon-ok"></span></button>
-                <button type="button" class="btn btn-default right-button" ng-click="main.deleteTodo(todo.id)"><span class="glyphicon glyphicon-trash"></span></button>
-                <button type="button" class="btn btn-default right-button-edit" ng-click="main.setEditedTodo(todo.id, todo)"><span class="glyphicon glyphicon-pencil"></span></button>
+                <button type="button" class="btn btn-default left-button" id="done-todo" ng-click="main.updateComplete(todo)"><span class="glyphicon glyphicon-ok"></span></button>
+                <button type="button" class="btn btn-default right-button" id="delete-todo" ng-click="main.deleteTodo(todo.id)"><span class="glyphicon glyphicon-trash"></span></button>
+                <button type="button" class="btn btn-default right-button-edit" id="edit-todo" ng-click="main.setEditedTodo(todo.id, todo)"><span class="glyphicon glyphicon-pencil"></span></button>
             <li class="list-group-item" ng-if="!todo.isComplete">
                 <span class="notCompletedTask">{{todo.title}}</span>
-                <button type="button" class="btn btn-default left-button" ng-click="main.updateComplete(todo)"><span class="glyphicon glyphicon-ok"></span></button>
-                <button type="button" class="btn btn-default right-button" ng-click="main.deleteTodo(todo.id)"><span class="glyphicon glyphicon-trash"></span></button>
-                <button type="button" class="btn btn-default right-button-edit" ng-click="main.setEditedTodo(todo.id, todo)"><span class="glyphicon glyphicon-pencil"></span></button>
+                <button type="button" class="btn btn-default left-button" id="done-todo" ng-click="main.updateComplete(todo)"><span class="glyphicon glyphicon-ok"></span></button>
+                <button type="button" class="btn btn-default right-button" id="delete-todo" ng-click="main.deleteTodo(todo.id)"><span class="glyphicon glyphicon-trash"></span></button>
+                <button type="button" class="btn btn-default right-button-edit" id="edit-todo" ng-click="main.setEditedTodo(todo.id, todo)"><span class="glyphicon glyphicon-pencil"></span></button>
             </li>
         </ul>
     </div>

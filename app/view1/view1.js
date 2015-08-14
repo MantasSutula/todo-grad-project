@@ -17,6 +17,7 @@ angular.module('todoList.view1', [
     TodoModel.getTodos()
         .then (function(todos) {
           main.todos = todos;
+          main.displayTodos = todos;
         })
         .catch (function(error) {
           main.error = error;
@@ -99,7 +100,12 @@ angular.module('todoList.view1', [
         if (item.id !== todoId) {
           return item;
         }
-      })
+      });
+      main.displayTodos = main.displayTodos.filter(function(item) {
+        if (item.id !== todoId) {
+          return item;
+        }
+      });
       return $http.delete(getUrlForId(todoId)).then(extract);
     };
 
@@ -144,8 +150,7 @@ angular.module('todoList.view1', [
       };
 
       main.allNumber = function () {
-        //main.todos = TodoModel.getTodos;
-        return main.todos.length;
+          return main.todos.length;
       };
 
       main.activeNumber = function () {
@@ -169,15 +174,27 @@ angular.module('todoList.view1', [
       };
 
       main.showAll = function() {
-        //main.todos = TodoModel.getTodos;
+        //$http.get(getUrl())
+        //    .then (function(response) {
+        //  main.displayTodos = extract(response);
+        //})
+        main.displayTodos = main.todos;
       };
 
       main.showActive = function() {
-        main.todos = main.todos.filter(function (item) {
-          if (!item.isComplete) {
-            return item;
-          }
-        });
+          main.displayTodos = main.todos.filter(function (item) {
+            if (!item.isComplete) {
+              return item;
+            }
+          });
+      };
+
+      main.showCompleted = function() {
+          main.displayTodos = main.todos.filter(function (item) {
+            if (item.isComplete) {
+              return item;
+            }
+          });
       };
   })
   .factory('TodoModel', function($http, $q) {
