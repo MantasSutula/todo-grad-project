@@ -17,7 +17,7 @@ angular.module("todoList.view1", [
               self.displayTodos = todos;
           })
           .catch (function(error) {
-              self.error = error;
+              self.error = "Failed to get list. Server returned " + error.status + " - " + error.statusText;
           })
           .finally (function() {
               self.message = "Done!";
@@ -55,6 +55,9 @@ angular.module("todoList.view1", [
                 .then(function(response) {
                     extract(response);
                     self.resetForm();
+                })
+                .catch (function(error) {
+                    self.error = "Failed to create item. Server returned " + error.status + " - " + error.statusText;
                 });
         }
     };

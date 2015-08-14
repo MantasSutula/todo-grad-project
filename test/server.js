@@ -39,7 +39,8 @@ describe("server", function() {
             request.post({
                 url: todoListUrl,
                 json: {
-                    title: "This is a TODO item"
+                    title: "This is a TODO item",
+                    isComplete: false
                 }
             }, function(error, response) {
                 assert.equal(response.statusCode, 201);
@@ -50,7 +51,8 @@ describe("server", function() {
             request.post({
                 url: todoListUrl,
                 json: {
-                    title: "This is a TODO item"
+                    title: "This is a TODO item",
+                    isComplete: false
                 }
             }, function(error, response) {
                 assert.equal(response.headers.location, "/api/todo/0");
@@ -61,12 +63,14 @@ describe("server", function() {
             request.post({
                 url: todoListUrl,
                 json: {
-                    title: "This is a TODO item"
+                    title: "This is a TODO item",
+                    isComplete: false
                 }
             }, function() {
                 request.get(todoListUrl, function(error, response, body) {
                     assert.deepEqual(JSON.parse(body), [{
                         title: "This is a TODO item",
+                        isComplete: false,
                         id: "0"
                     }]);
                     done();
