@@ -62,9 +62,21 @@ li {
 }
 
 .right-button {
-    float: right;
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    height: 58px;
+    width: 58px;
 }
 
+.right-button-edit {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    margin-right: 59px;
+    height: 58px;
+    width: 58px;
+}
 
 .left {
     float: left;
@@ -72,7 +84,11 @@ li {
 }
 
 .left-button {
-    float: left;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    height: 58px;
+    width: 58px;
 }
 
 .edit-button {
@@ -103,7 +119,12 @@ li {
     display: inline;
 }
 
-li.completedTask {
+.completedTask {
     color: #008800;
     font-weight: bold;
+    margin-left: 50px;
+}
+
+.notCompletedTask {
+    margin-left: 50px;
 }
