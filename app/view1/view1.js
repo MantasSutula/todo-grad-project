@@ -1,234 +1,200 @@
-'use strict';
-
-angular.module('todoList.view1', [
-  'ui.router'
+angular.module("todoList.view1", [
+  "ui.router"
 ])
-  .config(['$routeProvider', function($routeProvider) {
-    $routeProvider.when('/view1', {
-      templateUrl: 'view1/view1.html',
-      controller: 'View1Ctrl'
+.config(["$routeProvider", function($routeProvider) {
+    $routeProvider.when("/view1", {
+        templateUrl: "view1/view1.html",
+        controller: "View1Ctrl"
     });
-  }])
+}])
+.controller("View1Ctrl", function(TodoModel, $http) {
+    var self = this;
 
-  .controller('View1Ctrl', function(TodoModel, $http) {
-    var main = this;
-
-    main.loading = false;
+    self.loading = false;
     TodoModel.getTodos()
-        .then (function(todos) {
-          main.todos = todos;
-          main.displayTodos = todos;
-        })
-        .catch (function(error) {
-          main.error = error;
-        })
-        .finally (function() {
-          main.message = 'Done!';
-        });
+          .then (function(todos) {
+              self.todos = todos;
+              self.displayTodos = todos;
+          })
+          .catch (function(error) {
+              self.error = error;
+          })
+          .finally (function() {
+              self.message = "Done!";
+          });
 
-    main.newTodo = {
-      title: '',
-      isComplete: 'false'
+    self.newTodo = {
+        title: "",
+        isComplete: "false"
     };
 
-      function getUrl() {
-        return '/api/todo/';
-      }
-
-      function getUrlForId(todoId) {
-        return '/api/todo/' + todoId;
-      }
-
-    main.resetForm = function() {
-      main.loading = false;
-      main.newTodo = {
-        title: '',
-        isComplete: 'false',
-        id: ''
-      }
-    };
-
-    main.createTodo = function (todo, isValid) {
-      if (isValid) {
-        main.loading = true;
-        todo.isComplete = false;
-        //todo.id = +main.todos[main.todos.length-1].id + +1;
-        main.todos.push(todo);
-        $http.post(getUrl(), todo)
-            .then(function(response) {
-              extract(response);
-              main.resetForm();
-            });
-      };
-    };
-
-    main.updateTodo = function (todo, isValid) {
-      if (isValid) {
-        console.log("Updating TODO " + todo + " title: " + todo.title + " isComplete " + todo.isComplete);
-        main.loading = true;
-
-        main.cancelEditing();
-
-        main.todos.forEach(function(item) {
-          if (item.id === todo.id) {
-            item.title = todo.title;
-            if (item.isComplete !== todo.isComplete)
-            {
-              item.isComplete = todo.isComplete;
-            }
-          }
-        });
-
-        return $http.put(getUrlForId(todo.id), todo).then(extract);
-      }
-    };
-
-    main.updateComplete = function (todo) {
-      console.log("Updating " + todo.id + " from completion status: "+ todo.isComplete + " to completion status " + !todo.isComplete);
-      todo.isComplete = !todo.isComplete;
-      return $http.put(getUrlForId(todo.id), todo).then(extract);
+    function getUrl() {
+        return "/api/todo/";
     }
 
+    function getUrlForId(todoId) {
+        return "/api/todo/" + todoId;
+    }
 
-    main.deleteTodo = function (todoId) {
-      console.log("Deleting todo " + todoId);
-      main.loading = true;
+    self.resetForm = function() {
+        self.loading = false;
+        self.newTodo = {
+            title: "",
+            isComplete: "false",
+            id: ""
+        };
+    };
 
-      main.cancelEditing();
-
-      main.todos = main.todos.filter(function(item) {
-        if (item.id !== todoId) {
-          return item;
+    self.createTodo = function (todo, isValid) {
+        if (isValid) {
+            self.loading = true;
+            todo.isComplete = false;
+            //todo.id = +self.todos[self.todos.length-1].id + +1;
+            self.todos.push(todo);
+            $http.post(getUrl(), todo)
+                .then(function(response) {
+                    extract(response);
+                    self.resetForm();
+                });
         }
-      });
-      main.displayTodos = main.displayTodos.filter(function(item) {
-        if (item.id !== todoId) {
-          return item;
+    };
+
+    self.updateTodo = function (todo, isValid) {
+        if (isValid) {
+            console.log("Updating TODO " + todo + " title: " + todo.title + " isComplete " + todo.isComplete);
+            self.loading = true;
+
+            self.cancelEditing();
+
+            self.todos.forEach(function(item) {
+                if (item.id === todo.id) {
+                    item.title = todo.title;
+                    if (item.isComplete !== todo.isComplete) {
+                        item.isComplete = todo.isComplete;
+                    }
+                }
+            });
+
+            return $http.put(getUrlForId(todo.id), todo).then(extract);
         }
-      });
-      return $http.delete(getUrlForId(todoId)).then(extract);
     };
 
-    main.deleteAllActiveTodos = function () {
-      console.log("Delete completed todos ");
-
-      main.todos.forEach(function (item) {
-        if (item.isComplete) {
-          main.deleteTodo(item.id);
-        }
-      });
+    self.updateComplete = function (todo) {
+        console.log("Updating " + todo.id + " from completion status: " +
+            todo.isComplete + " to completion status " + !todo.isComplete);
+        todo.isComplete = !todo.isComplete;
+        return $http.put(getUrlForId(todo.id), todo).then(extract);
     };
 
-    main.setEditedTodo = function (todoId, todo) {
-      //console.log("Updating TODO " + todo)
-      //if (isValid) {
-      //  return $http.put(getUrl() + todoId, todo).then(extract);
-      console.log("Editing " + todoId);
-        main.editedTodoId = todoId;
-        main.editedTodo = angular.copy(todo);
-        main.isEditing = true;
-      //}
-    };
+    self.deleteTodo = function (todoId) {
+        console.log("Deleting todo " + todoId);
+        self.loading = true;
 
-    main.isCurrentTodo = function (todoId) {
-      return main.editedTodo !== null && main.editedTodoId === todoId;
-    };
+        self.cancelEditing();
 
-    main.cancelEditing = function () {
-      main.loading = false;
-      main.editedTodoId = null;
-      main.editedTodo = null;
-      main.isEditing = false;
-    };
-
-      function extract(result) {
-        console.log(result.data);
-        if (result.status === 201) {
-          main.todos[main.todos.length - 1].id = result.data;
-        }
-        return result.data;
-      };
-
-      main.allNumber = function () {
-          return main.todos.length;
-      };
-
-      main.activeNumber = function () {
-        var activeNo = 0;
-        main.todos.forEach(function (item) {
-          if (!item.isComplete) {
-            activeNo++;
-          }
-        });
-        return activeNo;
-      };
-
-      main.completedNumber = function () {
-        var completedNo = 0;
-        main.todos.forEach(function (item) {
-          if (item.isComplete) {
-            completedNo++;
-          }
-        });
-        return completedNo;
-      };
-
-      main.showAll = function() {
-        //$http.get(getUrl())
-        //    .then (function(response) {
-        //  main.displayTodos = extract(response);
-        //})
-        main.displayTodos = main.todos;
-      };
-
-      main.showActive = function() {
-          main.displayTodos = main.todos.filter(function (item) {
-            if (!item.isComplete) {
-              return item;
+        self.todos = self.todos.filter(function(item) {
+            if (item.id !== todoId) {
+                return item;
             }
-          });
-      };
+        });
+        self.displayTodos = self.displayTodos.filter(function(item) {
+            if (item.id !== todoId) {
+                return item;
+            }
+        });
+        return $http.delete(getUrlForId(todoId)).then(extract);
+    };
 
-      main.showCompleted = function() {
-          main.displayTodos = main.todos.filter(function (item) {
+    self.deleteAllActiveTodos = function () {
+        console.log("Delete completed todos ");
+
+        self.todos.forEach(function (item) {
             if (item.isComplete) {
-              return item;
+                self.deleteTodo(item.id);
             }
-          });
-      };
-  })
-  .factory('TodoModel', function($http, $q) {
-    var todos = [
-      {
-        title: 'Scare Mantas',
-        isComplete: true
-      },
-      {
-        title: 'Paint the bucket',
-        isComplete: false
-      },
-      {
-        title: 'Another Todo',
-        isComplete: false
-      }
-    ];
+        });
+    };
+
+    self.setEditedTodo = function (todoId, todo) {
+        console.log("Editing " + todoId);
+        self.editedTodoId = todoId;
+        self.editedTodo = angular.copy(todo);
+        self.isEditing = true;
+    };
+
+    self.isCurrentTodo = function (todoId) {
+        return self.editedTodo !== null && self.editedTodoId === todoId;
+    };
+
+    self.cancelEditing = function () {
+        self.loading = false;
+        self.editedTodoId = null;
+        self.editedTodo = null;
+        self.isEditing = false;
+    };
 
     function extract(result) {
-      return result.data;
+        console.log(result.data);
+        if (result.status === 201) {
+            self.todos[self.todos.length - 1].id = result.data;
+        }
+        return result.data;
+    }
+
+    self.allNumber = function () {
+        return self.todos.length;
+    };
+
+    self.activeNumber = function () {
+        var activeNo = 0;
+        self.todos.forEach(function (item) {
+            if (!item.isComplete) {
+                activeNo++;
+            }
+        });
+        return activeNo;
+    };
+
+    self.completedNumber = function () {
+        var completedNo = 0;
+        self.todos.forEach(function (item) {
+            if (item.isComplete) {
+                completedNo++;
+            }
+        });
+        return completedNo;
+    };
+
+    self.showAll = function() {
+        self.displayTodos = self.todos;
+    };
+
+    self.showActive = function() {
+        self.displayTodos = self.todos.filter(function (item) {
+            if (!item.isComplete) {
+                return item;
+            }
+        });
+    };
+
+    self.showCompleted = function() {
+        self.displayTodos = self.todos.filter(function (item) {
+            if (item.isComplete) {
+                return item;
+            }
+        });
+    };
+})
+.factory("TodoModel", function($http, $q) {
+    function extract(result) {
+        return result.data;
     }
 
     function getTodos() {
-      //var deferred = $q.defer();
-      //
-      //deferred.resolve(todos);
-      ////deferred.reject('No todos');
-      //
-      //return deferred.promise;
-      return $http.get('/api/todo').then(extract);
+        return $http.get("/api/todo").then(extract);
     }
 
     return {
-      getTodos: getTodos
-    }
-  })
-;
+        getTodos: getTodos
+    };
+});

@@ -5,5 +5,9 @@
   "quotmark": "double",
   "undef": true,
   "node": true,
-  "mocha": true
+  "mocha": true,
+  "globals": {
+    "console": true,
+    "angular": true
+  }
 }

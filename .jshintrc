@@ -1,8 +1,12 @@
 {
+  "node": true,
   "curly": true,
   "eqeqeq": true,
   "immed": true,
   "quotmark": "double",
   "undef": true,
-  "node": true
+  "globals": {
+    "console": true,
+    "angular": true
+  }
 }
