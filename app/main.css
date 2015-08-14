@@ -75,6 +75,11 @@ li {
     float: left;
 }
 
+.edit-button {
+    width: 49.5%;
+    display: inline;
+}
+
 .header-remaining {
     color: white;
 }

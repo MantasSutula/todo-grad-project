@@ -50,10 +50,14 @@ angular.module('todoList.view1', [
     main.createTodo = function (todo, isValid) {
       if (isValid) {
         main.loading = true;
-
-        todo.id = +main.todos[main.todos.length-1].id + +1;
+        todo.isComplete = false;
+        //todo.id = +main.todos[main.todos.length-1].id + +1;
         main.todos.push(todo);
-        return $http.post(getUrl(), todo).then(extract);
+        $http.post(getUrl(), todo)
+            .then(function(response) {
+              extract(response);
+              main.resetForm();
+            });
       };
     };
 
@@ -123,6 +127,9 @@ angular.module('todoList.view1', [
 
       function extract(result) {
         console.log(result.data);
+        if (result.status === 201) {
+          main.todos[main.todos.length - 1].id = result.data;
+        }
         return result.data;
       }
   })
